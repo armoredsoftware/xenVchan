@@ -1,0 +1,21 @@
+#!/bin/bash
+if [ "$1" == "all" ]; then
+  javac JVChanUtil.java
+  javah -jni JVChanUtil
+  gcc -shared -fpic -o libJVChanUtil.so -I/usr/lib/jvm/java/include -I/usr/lib/jvm/java/include/linux -lxenvchan -lxenctrl JNI_common.c
+elif [ "$1" == "java" ]; then
+   javac JVChanUtil.java
+   javah -jni JVChanUtil
+elif [ "$1" == "jh" ]; then
+   javac JVChanUtil.java
+   javah -jni JVChanUtil
+   vi JVChanUtil.h
+else
+   echo
+   echo "Requires argument to run:"
+   echo "  all - runs javac javah and gcc to create a shared library"
+   echo "  java - runs javac and javah"
+   echo "  jh   - runs javac and javah and does a vi on JVChanUtil.h"
+   echo
+
+fi
