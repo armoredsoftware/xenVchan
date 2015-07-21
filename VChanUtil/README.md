@@ -8,7 +8,9 @@ In order to use VChan the Virtual Machines need to have the following setup:
 * Yum repository needs to be setup
 * Xen development and Xen runtime need to be installed
 * The Xen gntalloc, evtchn, and gntdev kernel modules need to be running
-##Setup
+
+## Setup
+
 ### Yum Repository Setup / Xen VM Installations 
 In order to set up the yum repository you need to:
 * Obtain the IP address for the VM:
