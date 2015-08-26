@@ -54,6 +54,13 @@ struct libxenvchan * vchan_client_init(xentoollog_logger * logger, int srvId){
    return createTransmitChanP(logger, srvId, clientId, "data/serverVchan");
 
 }
+int vchan_is_server(struct libxenvchan * ctrl){
+  if (!ctrl)
+    return -4;
+  else
+    return ctrl->is_server;
+}
+
 
 struct libxenvchan * vchan_server_init(xentoollog_logger *logger, int clientId){
     return createReceiveChanP(logger, clientId, "data/serverVchan");
@@ -181,7 +188,7 @@ struct libxenvchan * createReceiveChanP (xentoollog_logger * xc_logger, int id, 
     exit(1);
   }
  // rxCtrl->blocking = 1; // Block for each vchan IO ?
-  
+    rxCtrl->is_server = 1;
   return rxCtrl;
 
 }

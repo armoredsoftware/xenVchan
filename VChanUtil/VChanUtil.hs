@@ -4,6 +4,7 @@ module VChanUtil
 ,client_init
 ,maybe_client_init
 ,server_init
+,is_server
 ,receive
 ,send
 ,close
@@ -70,6 +71,9 @@ foreign import ccall safe "exp1Common.h vchan_maybe_client_init"
 
 foreign import ccall safe "exp1Common.h vchan_server_init"
     c_server_init:: XenToolLogger -> CInt-> IO (LibXenVChan) 
+
+foreign import ccall safe "exp1Common.h vchan_is_server"
+    c_is_server:: LibXenVChan -> IO(CInt)
 
 foreign import ccall safe "exp1Common.h createTransmitChanP"
     c_createTransmitChanP:: XenToolLogger -> CInt-> CInt-> CString -> IO (LibXenVChan) 
@@ -285,6 +289,11 @@ server_init otherDom = do logger <- createLogger
                           chan <-c_server_init logger (fromIntegral otherDom :: CInt)
                          -- destroyLogger logger
                           return chan
+                          
+is_server::LibXenVChan -> IO(Int)
+--is_server returns 0 if client 1 or -1 if server -4 if an error occurred
+is_server chan = do server <-c_is_server chan
+                    return (fromIntegral server)
 
 send :: Binary e => LibXenVChan -> e -> IO(Int)
 send chan packet = do let msg = LazyBS.toStrict $ compress $ encode packet 
